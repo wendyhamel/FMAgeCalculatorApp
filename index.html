@@ -8,30 +8,50 @@
   
   <title>Frontend Mentor | Age calculator app</title>
 
-  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
-  <style>
-    .attribution { font-size: 11px; text-align: center; }
-    .attribution a { color: hsl(228, 45%, 44%); }
-  </style>
+  <!-- Font -->
+  <link rel="stylesheet" href="style/font.css">
+
+<!--   Tailwind play cdn and local tailwind config file -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="src/tailwind.config.js"></script>
+
 </head>
-<body>
+<body class="bg-off-white text-off-black pt-[5.5rem] px-4 pb-12 h-screen md:grid md:place-items-center">
 
-  Day
-  DD
-
-  Month
-  MM
-
-  Year
-  YYYY
-
-  -- years
-  -- months
-  -- days
-  
-  <div class="attribution">
-    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
-    Coded by <a href="#">Your Name Here</a>.
+  <div class="bg-white rounded-t-3xl rounded-bl-3xl rounded-br-[100px] px-6 py-12 md:rounded-br-[160px] md:px-12">
+    <section>
+      <div class="grid grid-cols-3 gap-4 pb-16 max-w-xl">
+        <label for="day">
+          <span class="uppercase tracking-[0.2em] font-bold text-xs text-smokey-grey md:text-sm">Day</span>
+          <input id="day" class="w-full mt-1 px-2.5 py-3 border border-light-grey rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey md:text-3.5xl md:mt-4" type="number" min="0" max="31" placeholder="DD">
+        </label>
+        <label for="month">
+          <span class="uppercase tracking-[0.2em] font-bold text-xs text-smokey-grey md:text-sm">Month</span>
+          <input id="month" class="w-full mt-1 px-2.5 py-3 border border-light-grey rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey md:text-3.5xl md:mt-4" type="number" min="0" max="12" placeholder="MM">
+        </label>
+        <label for="year">
+          <span class="uppercase tracking-[0.2em] font-bold text-xs text-smokey-grey md:text-sm">Year</span>
+          <input id="year" class="w-full mt-1 px-2.5 py-3 border border-light-grey rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey md:text-3.5xl md:mt-4" type="number" min="1900" max="2023" placeholder="YYYY">
+        </label>
+      </div>
+      <div class="relative grid place-items-center">
+        <hr class="border-light-gray w-full lg:w-[730px]"/>
+        <div class="absolute grid place-items-center bg-purple rounded-full p-5 stroke-4 text-white md:end-0 md:p-6 md:stroke-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="46" height="44" viewBox="0 0 46 44"><g fill="none" stroke="currentColor"><path d="M1 22.019C8.333 21.686 23 25.616 23 44M23 44V0M45 22.019C37.667 21.686 23 25.616 23 44"/></g></svg>
+        </div>
+      </div>
+    </section>
+    <section class="pt-16 px-1.5">
+      <p class="text-5.5xl font-extrabold italic md:text-7xl xl:text-8xl"><span class="text-purple">- -</span> years</p>
+      <p class="text-5.5xl font-extrabold italic md:text-7xl xl:text-8xl"><span class="text-purple">- -</span> months</p>
+      <p class="text-5.5xl font-extrabold italic md:text-7xl xl:text-8xl"><span class="text-purple">- -</span> days</p>
+    </section>
   </div>
+
+
+  <footer class="fixed bottom-0 inset-x-0 text-center text-xs py-2 bg-blue-dark/80 text-blue-pale opacity-0 translate-y-2 hover:opacity-100 hover:translate-y-0 transform transition ease-in-out duration-150">
+    Challenge by <a class="underline hover:text-gradient-end" href="https://www.frontendmentor.io/challenges/age-calculator-app-dF9DFFpj-Q" target="_blank">Frontend Mentor</a>.
+    Coded by <a class="underline hover:text-gradient-end" href="https://www.frontendmentor.io/profile/wendyhamel" target="_blank">Wendy Hamel</a>.
+  </footer>
 </body>
 </html>
