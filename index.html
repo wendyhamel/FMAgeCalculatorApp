@@ -11,46 +11,73 @@
   <!-- Font -->
   <link rel="stylesheet" href="style/font.css">
 
-<!--   Tailwind play cdn and local tailwind config file -->
+  <!--   Tailwind play cdn and local tailwind config file -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="src/tailwind.config.js"></script>
+
+  <!-- Alpine.js  -->
+  <!-- Alpine Plugins -->
+  <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
+
+  <!-- Alpine.js core  -->
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
 </head>
 <body class="bg-off-white text-off-black pt-[5.5rem] px-4 pb-12 h-screen md:grid md:place-items-center">
 
-  <div class="bg-white rounded-t-3xl rounded-bl-3xl rounded-br-[100px] px-6 py-12 md:rounded-br-[200px] md:py-14 md:px-14">
+  <form
+          x-data="calculateAge()"
+          x-init="
+                  $watch('day', value => {validate('day')})
+                  $watch('month', value => {validate('month')})
+                  $watch('year', value => {validate('year')})
+                 "
+          class="bg-white rounded-t-3xl rounded-bl-3xl rounded-br-[100px] px-6 py-12 md:rounded-br-[200px] md:py-14 md:px-14"
+  >
     <section>
       <div class="grid grid-cols-3 gap-4 pb-14 max-w-xl md:pb-12 md:gap-8">
         <label for="day">
-          <span class="uppercase tracking-[0.2em] font-bold text-xs text-smokey-grey md:text-sm">Day</span>
+          <span :class="validation.day.message || validation.date.message ? 'uppercase tracking-[0.2em] font-bold text-xs text-smokey-grey md:text-sm' : 'uppercase tracking-[0.2em] font-bold text-xs text-smokey-grey md:text-sm'">Day</span>
           <input
                   id="day"
-                  class="w-full mt-1 px-2.5 py-3 border border-light-grey rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey md:text-3.5xl md:mt-2 md:px-5"
-                  type="number"
+                  class="w-full mt-1 px-2.5 py-3 border border-light-grey rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey invalid:border-red ease-out duration-150 md:text-3.5xl md:mt-2 md:px-5"
                   min="0"
                   max="31"
+                  x-model="day"
+                  x-mask="99"
                   placeholder="DD"
+                  required
           >
+          <em class="text-red leading-8" x-text="validation.day.message"></em>
+          <em class="text-red leading-8 whitespace-nowrap" x-text="validation.date.message"></em>
         </label>
         <label for="month">
-          <span class="uppercase tracking-[0.2em] font-bold text-xs text-smokey-grey md:text-sm">Month</span>
+          <span :class="validation.month.message || validation.date.message ? 'uppercase tracking-[0.2em] font-bold text-xs text-smokey-grey md:text-sm' : 'uppercase tracking-[0.2em] font-bold text-xs text-smokey-grey md:text-sm'">Month</span>
           <input
                   id="month"
-                  class="w-full mt-1 px-2.5 py-3 border border-light-grey rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey md:text-3.5xl md:mt-2 md:px-5"
-                  type="number"
+                  class="w-full mt-1 px-2.5 py-3 border border-light-grey rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey invalid:border-red ease-out duration-150 md:text-3.5xl md:mt-2 md:px-5"
                   min="0"
                   max="12"
+                  x-model="month"
+                  x-mask="99"
                   placeholder="MM"
+                  required
           >
+          <em class="text-red leading-8" x-text="validation.month.message"></em>
         </label>
         <label for="year">
-          <span class="uppercase tracking-[0.2em] font-bold text-xs text-smokey-grey md:text-sm">Year</span>
+          <span :class="validation.year.message || validation.date.message ? 'uppercase tracking-[0.2em] font-bold text-xs text-smokey-grey md:text-sm' : 'uppercase tracking-[0.2em] font-bold text-xs text-smokey-grey md:text-sm'">Year</span>
           <input
                   id="year"
-                  class="w-full mt-1 px-2.5 py-3 border border-light-grey rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey md:text-3.5xl md:mt-2 md:px-5"
-                  type="number"
+                  class="w-full mt-1 px-2.5 py-3 border border-light-grey rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey invalid:border-red ease-out duration-150 md:text-3.5xl md:mt-2 md:px-5"
                   min="1900"
-                  max="2023" placeholder="YYYY">
+                  x-model="year"
+                  x-mask="9999"
+                  :max="currentYear"
+                  placeholder="YYYY"
+                  required
+          >
+          <em class="text-red leading-8" x-text="validation.year.message"></em>
         </label>
       </div>
       <div class="relative grid place-items-center">
@@ -61,11 +88,11 @@
       </div>
     </section>
     <section class="pt-16 md:pt-14 lg:ps-1.5 lg:space-y-2">
-      <p class="whitespace-nowrap text-5.5xl font-extrabold italic md:text-7xl lg:text-8.5xl"><span class="text-purple">- -</span> years</p>
-      <p class="whitespace-nowrap text-5.5xl font-extrabold italic md:text-7xl lg:text-8.5xl"><span class="text-purple">- -</span> months</p>
-      <p class="whitespace-nowrap text-5.5xl font-extrabold italic md:text-7xl lg:text-8.5xl"><span class="text-purple">- -</span> days</p>
+      <p class="whitespace-nowrap text-5.5xl font-extrabold italic md:text-7xl lg:text-8.5xl"><span class="text-purple" x-text="years ? years : '- -'"></span> years</p>
+      <p class="whitespace-nowrap text-5.5xl font-extrabold italic md:text-7xl lg:text-8.5xl"><span class="text-purple" x-text="months ? months : '- -'"></span> months</p>
+      <p class="whitespace-nowrap text-5.5xl font-extrabold italic md:text-7xl lg:text-8.5xl"><span class="text-purple" x-text="days ? days : '- -'"></span> days</p>
     </section>
-  </div>
+  </form>
 
 
   <footer class="fixed bottom-0 inset-x-0 text-center text-xs py-2 bg-blue-dark/80 text-blue-pale opacity-0 translate-y-2 hover:opacity-100 hover:translate-y-0 transform transition ease-in-out duration-150">
@@ -73,4 +100,5 @@
     Coded by <a class="underline hover:text-gradient-end" href="https://www.frontendmentor.io/profile/wendyhamel" target="_blank">Wendy Hamel</a>.
   </footer>
 </body>
+<script type="text/javascript" src="src/AgeCalculation.js"></script>
 </html>
