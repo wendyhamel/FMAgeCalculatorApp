@@ -6,7 +6,8 @@ tailwind.config = {
 		extend: {
 			fontSize: {
 				'3.5xl': '2rem',
-				'5.5xl': ['3.5rem', {lineHeight: '3.8rem'}],
+				'5.5xl': ['min(14vw,3.4rem)', {lineHeight: '3.8rem', letterSpacing: '-0.01em'}],
+				'8.5xl': ['6.3rem', {lineHeight: '6.5rem', letterSpacing: '-0.01em'}],
 			},
 			colors: {
 				'purple': 'hsl(259, 100%, 65%)',
