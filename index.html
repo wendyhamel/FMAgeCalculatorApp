@@ -28,54 +28,45 @@
   <form
           x-data="calculateAge()"
           x-init="
-                  $watch('day', value => {validate('day')})
-                  $watch('month', value => {validate('month')})
-                  $watch('year', value => {validate('year')})
+                  $watch('day', value => {validate('day'), validDate()})
+                  $watch('month', value => {validate('month'), validDate()})
+                  $watch('year', value => {validate('year'), validDate()})
                  "
           class="bg-white rounded-t-3xl rounded-bl-3xl rounded-br-[100px] px-6 py-12 md:rounded-br-[200px] md:py-14 md:px-14"
   >
     <section>
       <div class="grid grid-cols-3 gap-4 pb-14 max-w-xl md:pb-12 md:gap-8">
         <label for="day">
-          <span :class="validation.day.message || validation.date.message ? 'uppercase tracking-[0.2em] font-bold text-xs text-smokey-grey md:text-sm' : 'uppercase tracking-[0.2em] font-bold text-xs text-smokey-grey md:text-sm'">Day</span>
+          <span :class="validation.day.message || validDateMessage ? 'uppercase tracking-[0.2em] font-bold text-xs text-red md:text-sm' : 'uppercase tracking-[0.2em] font-bold text-xs text-smokey-grey md:text-sm'">Day</span>
           <input
                   id="day"
-                  class="w-full mt-1 px-2.5 py-3 border border-light-grey rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey invalid:border-red ease-out duration-150 md:text-3.5xl md:mt-2 md:px-5"
-                  min="0"
-                  max="31"
                   x-model="day"
-                  x-mask="99"
                   placeholder="DD"
-                  required
+                  x-mask="99"
+                  :class="validation.year.message || validDateMessage ? 'w-full mt-1 px-2.5 py-3 border border-red rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey invalid:border-red ease-out duration-150 md:text-3.5xl md:mt-2 md:px-5' : 'w-full mt-1 px-2.5 py-3 border border-light-grey rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey invalid:border-red ease-out duration-150 md:text-3.5xl md:mt-2 md:px-5'"
           >
           <em class="text-red leading-8" x-text="validation.day.message"></em>
-          <em class="text-red leading-8 whitespace-nowrap" x-text="validation.date.message"></em>
+          <em class="text-red leading-8 whitespace-nowrap" x-text="validDateMessage"></em>
         </label>
         <label for="month">
-          <span :class="validation.month.message || validation.date.message ? 'uppercase tracking-[0.2em] font-bold text-xs text-smokey-grey md:text-sm' : 'uppercase tracking-[0.2em] font-bold text-xs text-smokey-grey md:text-sm'">Month</span>
+          <span :class="validation.month.message || validDateMessage ? 'uppercase tracking-[0.2em] font-bold text-xs text-red md:text-sm' : 'uppercase tracking-[0.2em] font-bold text-xs text-smokey-grey md:text-sm'">Month</span>
           <input
                   id="month"
-                  class="w-full mt-1 px-2.5 py-3 border border-light-grey rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey invalid:border-red ease-out duration-150 md:text-3.5xl md:mt-2 md:px-5"
-                  min="0"
-                  max="12"
                   x-model="month"
-                  x-mask="99"
                   placeholder="MM"
-                  required
+                  x-mask="99"
+                  :class="validation.year.message || validDateMessage ? 'w-full mt-1 px-2.5 py-3 border border-red rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey invalid:border-red ease-out duration-150 md:text-3.5xl md:mt-2 md:px-5' : 'w-full mt-1 px-2.5 py-3 border border-light-grey rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey invalid:border-red ease-out duration-150 md:text-3.5xl md:mt-2 md:px-5'"
           >
           <em class="text-red leading-8" x-text="validation.month.message"></em>
         </label>
         <label for="year">
-          <span :class="validation.year.message || validation.date.message ? 'uppercase tracking-[0.2em] font-bold text-xs text-smokey-grey md:text-sm' : 'uppercase tracking-[0.2em] font-bold text-xs text-smokey-grey md:text-sm'">Year</span>
+          <span :class="validation.year.message || validDateMessage ? 'uppercase tracking-[0.2em] font-bold text-xs text-red md:text-sm' : 'uppercase tracking-[0.2em] font-bold text-xs text-smokey-grey md:text-sm'">Year</span>
           <input
                   id="year"
-                  class="w-full mt-1 px-2.5 py-3 border border-light-grey rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey invalid:border-red ease-out duration-150 md:text-3.5xl md:mt-2 md:px-5"
-                  min="1900"
                   x-model="year"
                   x-mask="9999"
-                  :max="currentYear"
                   placeholder="YYYY"
-                  required
+                  :class="validation.year.message || validDateMessage ? 'w-full mt-1 px-2.5 py-3 border border-red rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey invalid:border-red ease-out duration-150 md:text-3.5xl md:mt-2 md:px-5' : 'w-full mt-1 px-2.5 py-3 border border-light-grey rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey invalid:border-red ease-out duration-150 md:text-3.5xl md:mt-2 md:px-5'"
           >
           <em class="text-red leading-8" x-text="validation.year.message"></em>
         </label>
