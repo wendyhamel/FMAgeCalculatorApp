@@ -3,9 +3,9 @@ window.calculateAge = function() {
 		year: '',
 		month: '',
 		day: '',
-		years : '',
-		months : '',
-		days : '',
+		years : '- -',
+		months : '- -',
+		days : '- -',
 		validDateMessage : '',
 
 		validation : {
