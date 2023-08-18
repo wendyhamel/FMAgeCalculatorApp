@@ -96,13 +96,25 @@ window.calculateAge = function() {
 						if(checkDate.getMonth() !== this.month -1) {
 							return this.validDateMessage = 'Must be a valid date'
 						}
+						this.checkAge()
 						return this.validDateMessage = ''
 					}
 				}
 			} else {
-				return  this.validDateMessage = ''
+				this.checkAge()
+				return this.validDateMessage = ''
 			}
-		}
+		},
 
+		checkAge() {
+			let today = new Date();
+			let checkDate = new Date(this.year + ' ' + this.month + ' ' + this.day)
+			let differenceInTime = today.getTime() - checkDate.getTime();
+			let differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
+			this.years = Math.floor(differenceInDays / 365.25);
+			let remainingDays = Math.floor(differenceInDays - (this.years * 365.25));
+			this.months = Math.floor((remainingDays / 365.25) * 12);
+			this.days = Math.ceil(differenceInDays - (this.years * 365.25 + (this.months / 12 * 365.25)))
+		}
 	}
 }
