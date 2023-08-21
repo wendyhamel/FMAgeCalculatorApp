@@ -87,22 +87,28 @@ window.calculateAge = function() {
 			}
 		},
 		validDate () {
-			if (this.validation.day.invalid === false, this.validation.month.invalid === false, this.validation.year.invalid === false) {
-				const checkDate = new Date(this.year + ' ' + this.month + ' ' + this.day)
-				if (Object.prototype.toString.call(checkDate) === "[object Date]") {
-					if (isNaN(checkDate.getTime())) {
-						return this.validDateMessage = 'Must be a valid date'
-					} else {
-						if(checkDate.getMonth() !== this.month -1) {
+			if(this.year.length === 4 && this.month && this.day) {
+				if (this.validation.day.invalid === false, this.validation.month.invalid === false, this.validation.year.invalid === false) {
+					const checkDate = new Date(this.year + ' ' + this.month + ' ' + this.day)
+					if (Object.prototype.toString.call(checkDate) === "[object Date]") {
+						if (isNaN(checkDate.getTime())) {
 							return this.validDateMessage = 'Must be a valid date'
+						} else {
+							if(checkDate.getMonth() !== this.month -1) {
+								return this.validDateMessage = 'Must be a valid date'
+							}
+							this.checkAge()
+							return this.validDateMessage = ''
 						}
-						this.checkAge()
-						return this.validDateMessage = ''
 					}
+				} else {
+					this.checkAge()
+					return this.validDateMessage = ''
 				}
 			} else {
-				this.checkAge()
-				return this.validDateMessage = ''
+				this.years = '- -'
+				this.months = '- -'
+				this.days = '- -'
 			}
 		},
 
