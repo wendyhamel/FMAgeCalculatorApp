@@ -1,15 +1,16 @@
 window.calculateAge = function() {
 	return {
-		year: '',
-		month: '',
-		day: '',
+		yearOfBirth: '',
+		monthOfBirth: '',
+		dayOfBirth: '',
 		years : '- -',
 		months : '- -',
 		days : '- -',
 		validDateMessage : '',
+		today : new Date(),
 
 		validation : {
-			day: {
+			dayOfBirth: {
 				rule: {
 					required: function (field) {
 						if (field) {
@@ -30,7 +31,7 @@ window.calculateAge = function() {
 					}
 				}
 			},
-			month: {
+			monthOfBirth: {
 				rule: {
 					required: function (field) {
 						if (field) {
@@ -51,7 +52,7 @@ window.calculateAge = function() {
 					}
 				}
 			},
-			year: {
+			yearOfBirth: {
 				rule: {
 					required: function (field) {
 						if (field) {
@@ -87,20 +88,24 @@ window.calculateAge = function() {
 			}
 		},
 		validDate () {
-			if(this.year.length === 4 && this.month && this.day) {
-				if (this.validation.day.invalid === false, this.validation.month.invalid === false, this.validation.year.invalid === false) {
-					const checkDate = new Date(this.year + ' ' + this.month + ' ' + this.day)
-					if (Object.prototype.toString.call(checkDate) === "[object Date]") {
+			if(this.yearOfBirth.length === 4 && this.monthOfBirth && this.dayOfBirth) {
+				if (this.validation.dayOfBirth.invalid === false, this.validation.monthOfBirth.invalid === false, this.validation.yearOfBirth.invalid === false) {
+					const checkDate = new Date(this.yearOfBirth + '-' + this.monthOfBirth + '-' + this.dayOfBirth)
+					if (checkDate.setHours(0,0,0,0) <= this.today.setHours(0,0,0,0)) {
 						if (isNaN(checkDate.getTime())) {
 							return this.validDateMessage = 'Must be a valid date'
 						} else {
-							if(checkDate.getMonth() !== this.month -1) {
+							if(checkDate.getMonth() !== this.monthOfBirth -1) {
 								return this.validDateMessage = 'Must be a valid date'
 							}
 							this.checkAge()
 							return this.validDateMessage = ''
 						}
 					}
+					this.years = '- -'
+					this.months = '- -'
+					this.days = '- -'
+					return this.validDateMessage = 'Date must be in the past'
 				} else {
 					this.checkAge()
 					return this.validDateMessage = ''
@@ -112,15 +117,69 @@ window.calculateAge = function() {
 			}
 		},
 
+		// checkAge() {
+		// 	let today = new Date();
+		// 	let checkDate = new Date(this.yearOfBirth + ' ' + this.monthOfBirth + ' ' + this.dayOfBirth)
+		// 	let differenceInTime = today.getTime() - checkDate.getTime();
+		// 	let differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
+		// 	this.years = Math.floor(differenceInDays / 365.25);
+		// 	let remainingDays = Math.floor(differenceInDays - (this.years * 365.25));
+		// 	this.months = Math.floor((remainingDays / 365.25) * 12);
+		// 	this.days = Math.ceil(differenceInDays - (this.years * 365.25 + (this.months / 12 * 365.25)))
+		// },
+
 		checkAge() {
-			let today = new Date();
-			let checkDate = new Date(this.year + ' ' + this.month + ' ' + this.day)
-			let differenceInTime = today.getTime() - checkDate.getTime();
-			let differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
-			this.years = Math.floor(differenceInDays / 365.25);
-			let remainingDays = Math.floor(differenceInDays - (this.years * 365.25));
-			this.months = Math.floor((remainingDays / 365.25) * 12);
-			this.days = Math.ceil(differenceInDays - (this.years * 365.25 + (this.months / 12 * 365.25)))
+			let today = this.today;
+			let currentYear = today.getFullYear()
+			let currentMonth = today.getMonth()
+			let currentDay = today.getDate()
+			let yearOfBirth = this.yearOfBirth;
+			let monthOfBirth = this.monthOfBirth-1;
+			let dayOfBirth = this.dayOfBirth;
+			let yearsDifference;
+			let monthsDifference;
+			let daysDifference;
+
+			if(dayOfBirth <= currentDay) {
+				daysDifference = (this.daysInMonth(yearOfBirth, monthOfBirth) - dayOfBirth) + currentDay
+				if (this.daysInMonth(yearOfBirth, monthOfBirth) === daysDifference || daysDifference < 0) {
+					daysDifference = 0
+				}
+				monthsDifference--
+			} else {
+				daysDifference = currentDay - dayOfBirth
+			}
+
+			if (currentMonth > monthOfBirth) {
+				monthsDifference = currentMonth - monthOfBirth
+			} else {
+				monthsDifference = (currentMonth - monthOfBirth) + 12
+				yearsDifference--
+			}
+			if(currentMonth === monthOfBirth) {
+				monthsDifference = 0
+			}
+
+			yearsDifference = currentYear - yearOfBirth
+			if(yearsDifference <= 0) {
+				yearsDifference = 0
+			}
+
+			this.years = yearsDifference;
+			this.months = monthsDifference;
+			this.days = daysDifference;
+		},
+
+		daysInMonth(year, month) {
+			let february;
+			let daysInMonthArray = [31,february,31,30,31,30,31,31,30,31,30,31]
+
+			if((year % 4 ) === 0) {
+				february = 29
+			} else {
+				february = 28
+			}
+			return daysInMonthArray[month]
 		}
 	}
 }
