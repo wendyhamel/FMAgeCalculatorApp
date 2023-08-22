@@ -24,68 +24,69 @@
 
 </head>
 <body class="bg-off-white text-off-black pt-[5.5rem] px-4 pb-12 h-screen md:grid md:place-items-center">
+  <main>
+    <h1 class="sr-only">Age calculator app</h1>
+    <form
+            x-data="calculateAge()"
+            x-init="
+                    $watch('dayOfBirth', value => {validate('dayOfBirth'), validDate()})
+                    $watch('monthOfBirth', value => {validate('monthOfBirth'), validDate()})
+                    $watch('yearOfBirth', value => {validate('yearOfBirth'), validDate()})
+                   "
+            class="bg-white rounded-t-3xl rounded-bl-3xl rounded-br-[100px] px-6 py-12 md:rounded-br-[200px] md:py-14 md:px-14"
+    >
+      <section>
+        <section class="grid grid-cols-3 gap-4 pb-14 max-w-xl md:pb-12 md:gap-8">
+          <label for="day">
+            <span :class="validation.dayOfBirth.message || validDateMessage ? 'uppercase tracking-[0.2em] font-bold text-xs text-red md:text-sm' : 'uppercase tracking-[0.2em] font-bold text-xs text-smokey-grey md:text-sm'">Day</span>
+            <input
+                    id="day"
+                    x-model="dayOfBirth"
+                    placeholder="DD"
+                    x-mask="99"
+                    :class="validation.yearOfBirth.message || validDateMessage ? 'w-full mt-1 px-2.5 py-3 border border-red rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey invalid:border-red ease-out duration-150 md:text-3.5xl md:mt-2 md:px-5' : 'w-full mt-1 px-2.5 py-3 border border-light-grey rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey invalid:border-red ease-out duration-150 md:text-3.5xl md:mt-2 md:px-5'"
+            >
+            <em class="text-red leading-8" x-text="validation.dayOfBirth.message"></em>
+            <em class="text-red leading-8 whitespace-nowrap" x-text="validDateMessage"></em>
+          </label>
+          <label for="month">
+            <span :class="validation.monthOfBirth.message || validDateMessage ? 'uppercase tracking-[0.2em] font-bold text-xs text-red md:text-sm' : 'uppercase tracking-[0.2em] font-bold text-xs text-smokey-grey md:text-sm'">Month</span>
+            <input
+                    id="month"
+                    x-model="monthOfBirth"
+                    placeholder="MM"
+                    x-mask="99"
+                    :class="validation.yearOfBirth.message || validDateMessage ? 'w-full mt-1 px-2.5 py-3 border border-red rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey invalid:border-red ease-out duration-150 md:text-3.5xl md:mt-2 md:px-5' : 'w-full mt-1 px-2.5 py-3 border border-light-grey rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey invalid:border-red ease-out duration-150 md:text-3.5xl md:mt-2 md:px-5'"
+            >
+            <em class="text-red leading-8" x-text="validation.monthOfBirth.message"></em>
+          </label>
+          <label for="year">
+            <span :class="validation.yearOfBirth.message || validDateMessage ? 'uppercase tracking-[0.2em] font-bold text-xs text-red md:text-sm' : 'uppercase tracking-[0.2em] font-bold text-xs text-smokey-grey md:text-sm'">Year</span>
+            <input
+                    id="year"
+                    x-model="yearOfBirth"
+                    x-mask="9999"
+                    placeholder="YYYY"
+                    :class="validation.yearOfBirth.message || validDateMessage ? 'w-full mt-1 px-2.5 py-3 border border-red rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey invalid:border-red ease-out duration-150 md:text-3.5xl md:mt-2 md:px-5' : 'w-full mt-1 px-2.5 py-3 border border-light-grey rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey invalid:border-red ease-out duration-150 md:text-3.5xl md:mt-2 md:px-5'"
+            >
+            <em class="text-red leading-8" x-text="validation.yearOfBirth.message"></em>
+          </label>
+        </section>
+        <section class="relative grid place-items-center">
+          <hr class="border-light-gray w-full lg:w-[735px]"/>
+          <div class="absolute grid place-items-center bg-purple rounded-full p-5 text-white lg:end-0 lg:p-6">
+            <svg class="w-6 h-6 stroke-[4] lg:w-12 lg:h-12 lg:stroke-2" xmlns="http://www.w3.org/2000/svg" width="46" height="44" viewBox="0 0 46 44"><g fill="none" stroke="currentColor"><path d="M1 22.019C8.333 21.686 23 25.616 23 44M23 44V0M45 22.019C37.667 21.686 23 25.616 23 44"/></g></svg>
+          </div>
+        </section>
+      </section>
+      <section class="pt-16 md:pt-14 lg:ps-1.5 lg:space-y-2">
+        <p class="whitespace-nowrap text-5.5xl font-extrabold italic md:text-7xl lg:text-8.5xl"><span class="text-purple" x-text="years === 0 ? 0 : years"></span> <span x-text="years === 1 ? 'year' : 'years'"></span></p>
+        <p class="whitespace-nowrap text-5.5xl font-extrabold italic md:text-7xl lg:text-8.5xl"><span class="text-purple" x-text="months === 0 ? 0 : months"></span> <span x-text="months === 1 ? 'month' : 'months'"></span></p>
+        <p class="whitespace-nowrap text-5.5xl font-extrabold italic md:text-7xl lg:text-8.5xl"><span class="text-purple" x-text="days === 0 ? 0 : days"></span> <span x-text="days === 1 ? 'day' : 'days'"></span></p>
+      </section>
+    </form>
 
-  <form
-          x-data="calculateAge()"
-          x-init="
-                  $watch('dayOfBirth', value => {validate('dayOfBirth'), validDate()})
-                  $watch('monthOfBirth', value => {validate('monthOfBirth'), validDate()})
-                  $watch('yearOfBirth', value => {validate('yearOfBirth'), validDate()})
-                 "
-          class="bg-white rounded-t-3xl rounded-bl-3xl rounded-br-[100px] px-6 py-12 md:rounded-br-[200px] md:py-14 md:px-14"
-  >
-    <section>
-      <div class="grid grid-cols-3 gap-4 pb-14 max-w-xl md:pb-12 md:gap-8">
-        <label for="day">
-          <span :class="validation.dayOfBirth.message || validDateMessage ? 'uppercase tracking-[0.2em] font-bold text-xs text-red md:text-sm' : 'uppercase tracking-[0.2em] font-bold text-xs text-smokey-grey md:text-sm'">Day</span>
-          <input
-                  id="day"
-                  x-model="dayOfBirth"
-                  placeholder="DD"
-                  x-mask="99"
-                  :class="validation.yearOfBirth.message || validDateMessage ? 'w-full mt-1 px-2.5 py-3 border border-red rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey invalid:border-red ease-out duration-150 md:text-3.5xl md:mt-2 md:px-5' : 'w-full mt-1 px-2.5 py-3 border border-light-grey rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey invalid:border-red ease-out duration-150 md:text-3.5xl md:mt-2 md:px-5'"
-          >
-          <em class="text-red leading-8" x-text="validation.dayOfBirth.message"></em>
-          <em class="text-red leading-8 whitespace-nowrap" x-text="validDateMessage"></em>
-        </label>
-        <label for="month">
-          <span :class="validation.monthOfBirth.message || validDateMessage ? 'uppercase tracking-[0.2em] font-bold text-xs text-red md:text-sm' : 'uppercase tracking-[0.2em] font-bold text-xs text-smokey-grey md:text-sm'">Month</span>
-          <input
-                  id="month"
-                  x-model="monthOfBirth"
-                  placeholder="MM"
-                  x-mask="99"
-                  :class="validation.yearOfBirth.message || validDateMessage ? 'w-full mt-1 px-2.5 py-3 border border-red rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey invalid:border-red ease-out duration-150 md:text-3.5xl md:mt-2 md:px-5' : 'w-full mt-1 px-2.5 py-3 border border-light-grey rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey invalid:border-red ease-out duration-150 md:text-3.5xl md:mt-2 md:px-5'"
-          >
-          <em class="text-red leading-8" x-text="validation.monthOfBirth.message"></em>
-        </label>
-        <label for="year">
-          <span :class="validation.yearOfBirth.message || validDateMessage ? 'uppercase tracking-[0.2em] font-bold text-xs text-red md:text-sm' : 'uppercase tracking-[0.2em] font-bold text-xs text-smokey-grey md:text-sm'">Year</span>
-          <input
-                  id="year"
-                  x-model="yearOfBirth"
-                  x-mask="9999"
-                  placeholder="YYYY"
-                  :class="validation.yearOfBirth.message || validDateMessage ? 'w-full mt-1 px-2.5 py-3 border border-red rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey invalid:border-red ease-out duration-150 md:text-3.5xl md:mt-2 md:px-5' : 'w-full mt-1 px-2.5 py-3 border border-light-grey rounded-lg text-lg tracking-wider font-bold placeholder-smokey-grey invalid:border-red ease-out duration-150 md:text-3.5xl md:mt-2 md:px-5'"
-          >
-          <em class="text-red leading-8" x-text="validation.yearOfBirth.message"></em>
-        </label>
-      </div>
-      <div class="relative grid place-items-center">
-        <hr class="border-light-gray w-full lg:w-[735px]"/>
-        <div class="absolute grid place-items-center bg-purple rounded-full p-5 text-white lg:end-0 lg:p-6">
-          <svg class="w-6 h-6 stroke-[4] lg:w-12 lg:h-12 lg:stroke-2" xmlns="http://www.w3.org/2000/svg" width="46" height="44" viewBox="0 0 46 44"><g fill="none" stroke="currentColor"><path d="M1 22.019C8.333 21.686 23 25.616 23 44M23 44V0M45 22.019C37.667 21.686 23 25.616 23 44"/></g></svg>
-        </div>
-      </div>
-    </section>
-    <section class="pt-16 md:pt-14 lg:ps-1.5 lg:space-y-2">
-      <p class="whitespace-nowrap text-5.5xl font-extrabold italic md:text-7xl lg:text-8.5xl"><span class="text-purple" x-text="years === 0 ? 0 : years"></span> <span x-text="years === 1 ? 'year' : 'years'"></span></p>
-      <p class="whitespace-nowrap text-5.5xl font-extrabold italic md:text-7xl lg:text-8.5xl"><span class="text-purple" x-text="months === 0 ? 0 : months"></span> <span x-text="months === 1 ? 'month' : 'months'"></span></p>
-      <p class="whitespace-nowrap text-5.5xl font-extrabold italic md:text-7xl lg:text-8.5xl"><span class="text-purple" x-text="days === 0 ? 0 : days"></span> <span x-text="days === 1 ? 'day' : 'days'"></span></p>
-    </section>
-  </form>
-
-
+  </main>
   <footer class="fixed bottom-0 inset-x-0 text-center text-xs py-2 bg-blue-dark/80 text-blue-pale opacity-0 translate-y-2 hover:opacity-100 hover:translate-y-0 transform transition ease-in-out duration-150">
     Challenge by <a class="underline hover:text-gradient-end" href="https://www.frontendmentor.io/challenges/age-calculator-app-dF9DFFpj-Q" target="_blank">Frontend Mentor</a>.
     Coded by <a class="underline hover:text-gradient-end" href="https://www.frontendmentor.io/profile/wendyhamel" target="_blank">Wendy Hamel</a>.
