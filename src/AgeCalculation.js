@@ -116,18 +116,6 @@ window.calculateAge = function() {
 				this.days = '- -'
 			}
 		},
-
-		// checkAge() {
-		// 	let today = new Date();
-		// 	let checkDate = new Date(this.yearOfBirth + ' ' + this.monthOfBirth + ' ' + this.dayOfBirth)
-		// 	let differenceInTime = today.getTime() - checkDate.getTime();
-		// 	let differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
-		// 	this.years = Math.floor(differenceInDays / 365.25);
-		// 	let remainingDays = Math.floor(differenceInDays - (this.years * 365.25));
-		// 	this.months = Math.floor((remainingDays / 365.25) * 12);
-		// 	this.days = Math.ceil(differenceInDays - (this.years * 365.25 + (this.months / 12 * 365.25)))
-		// },
-
 		checkAge() {
 			let today = this.today;
 			let currentYear = today.getFullYear()
@@ -140,29 +128,49 @@ window.calculateAge = function() {
 			let monthsDifference;
 			let daysDifference;
 
-			if(dayOfBirth <= currentDay) {
-				daysDifference = (this.daysInMonth(yearOfBirth, monthOfBirth) - dayOfBirth) + currentDay
-				if (this.daysInMonth(yearOfBirth, monthOfBirth) === daysDifference || daysDifference < 0) {
-					daysDifference = 0
-				}
-				monthsDifference--
-			} else {
-				daysDifference = currentDay - dayOfBirth
-			}
-
-			if (currentMonth > monthOfBirth) {
-				monthsDifference = currentMonth - monthOfBirth
-			} else {
-				monthsDifference = (currentMonth - monthOfBirth) + 12
-				yearsDifference--
-			}
-			if(currentMonth === monthOfBirth) {
-				monthsDifference = 0
-			}
-
 			yearsDifference = currentYear - yearOfBirth
-			if(yearsDifference <= 0) {
-				yearsDifference = 0
+
+			if(dayOfBirth <= currentDay) {
+				daysDifference = 0
+				if(dayOfBirth < currentDay) {
+					daysDifference = currentDay - dayOfBirth
+				}
+			} else {
+				daysDifference = (this.getDaysInMonth(yearOfBirth, monthOfBirth) - dayOfBirth) + currentDay
+				monthsDifference--
+			}
+
+			if (monthOfBirth <= currentMonth) {
+				if(monthOfBirth < currentMonth) {
+					if(monthOfBirth === currentMonth-1 && dayOfBirth > currentDay) {
+						monthsDifference = 0
+					} else {
+						monthsDifference = currentMonth - monthOfBirth
+					}
+				} else {
+					monthsDifference = 0
+				}
+				if(yearsDifference <= 0) {
+					yearsDifference = 0
+				} else {
+					if(monthOfBirth === currentMonth){
+						monthsDifference = 0
+					} else {
+						yearsDifference--
+					}
+					this.getYearDifference(yearsDifference, currentYear, yearOfBirth)
+				}
+			} else {
+				yearsDifference--
+				monthsDifference = currentMonth - monthOfBirth
+				if(monthsDifference < 0) {
+					if(dayOfBirth <= currentDay) {
+						monthsDifference = 12 + monthsDifference
+					} else {
+						monthsDifference = 12 + monthsDifference
+						daysDifference = dayOfBirth - currentDay
+					}
+				}
 			}
 
 			this.years = yearsDifference;
@@ -170,16 +178,23 @@ window.calculateAge = function() {
 			this.days = daysDifference;
 		},
 
-		daysInMonth(year, month) {
-			let february;
-			let daysInMonthArray = [31,february,31,30,31,30,31,31,30,31,30,31]
+		getDaysInMonth(year, month) {
+			let daysInMonthArray = [31,,31,30,31,30,31,31,30,31,30,31]
 
 			if((year % 4 ) === 0) {
-				february = 29
+				daysInMonthArray[1] = 29
 			} else {
-				february = 28
+				daysInMonthArray[1] = 28
 			}
 			return daysInMonthArray[month]
+		},
+
+		getYearDifference(yearsDifference, currentYear, yearOfBirth) {
+			if(yearsDifference <= 0) {
+				return yearsDifference = 0
+			} else {
+				return yearsDifference = currentYear - yearOfBirth
+			}
 		}
 	}
 }
