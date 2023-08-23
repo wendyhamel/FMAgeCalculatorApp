@@ -31,7 +31,7 @@
     <h1 class="sr-only">Age calculator app</h1>
     <form
             x-data="calculateAge()"
-            x-init="
+            x-init="getCurrent(),
                     $watch('dayOfBirth', value => {validate('dayOfBirth'), validDate()})
                     $watch('monthOfBirth', value => {validate('monthOfBirth'), validDate()})
                     $watch('yearOfBirth', value => {validate('yearOfBirth'), validDate()})
