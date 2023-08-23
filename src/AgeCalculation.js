@@ -3,6 +3,9 @@ window.calculateAge = function() {
 		yearOfBirth: '',
 		monthOfBirth: '',
 		dayOfBirth: '',
+		currentYear: '',
+		currentMonth: '',
+		currentDay: '',
 		years : '- -',
 		months : '- -',
 		days : '- -',
@@ -68,7 +71,7 @@ window.calculateAge = function() {
 							return {invalid: false, message: ''}
 						} else {
 							return {
-								invalid: true, message: 'Must be a valid year'
+								invalid: true, message: 'Must be a valid year',
 							}
 						}
 					}
@@ -86,9 +89,10 @@ window.calculateAge = function() {
 				this.validation[field].invalid = false
 				this.validation[field].message = ''
 			}
+			this.validDate()
 		},
 		validDate () {
-			if(this.yearOfBirth.length === 4 && this.monthOfBirth && this.dayOfBirth) {
+			if(this.yearOfBirth <= this.currentYear && this.yearOfBirth.length === 4 && this.monthOfBirth && this.dayOfBirth) {
 				if (this.validation.dayOfBirth.invalid === false, this.validation.monthOfBirth.invalid === false, this.validation.yearOfBirth.invalid === false) {
 					const checkDate = new Date(this.yearOfBirth + '-' + this.monthOfBirth + '-' + this.dayOfBirth)
 					if (checkDate.setHours(0,0,0,0) <= this.today.setHours(0,0,0,0)) {
@@ -116,98 +120,79 @@ window.calculateAge = function() {
 				this.days = '- -'
 			}
 		},
-		// checkAge() {
-		// 	let today = this.today;
-		// 	let currentYear = today.getFullYear()
-		// 	let currentMonth = today.getMonth()
-		// 	let currentDay = today.getDate()
-		// 	let yearOfBirth = this.yearOfBirth;
-		// 	let monthOfBirth = this.monthOfBirth-1;
-		// 	let dayOfBirth = this.dayOfBirth;
-		// 	let yearsDifference;
-		// 	let monthsDifference;
-		// 	let daysDifference;
-		//
-		// 	yearsDifference = currentYear - yearOfBirth
-		//
-		// 	if(dayOfBirth <= currentDay) {
-		// 		daysDifference = 0
-		// 		if(dayOfBirth < currentDay) {
-		// 			daysDifference = currentDay - dayOfBirth
-		// 		}
-		// 	} else {
-		// 		daysDifference = (this.getDaysInMonth(yearOfBirth, monthOfBirth) - dayOfBirth) + currentDay
-		// 		monthsDifference--
-		// 	}
-		//
-		// 	if (monthOfBirth <= currentMonth) {
-		// 		if(monthOfBirth < currentMonth) {
-		// 			if(monthOfBirth === currentMonth-1 && dayOfBirth > currentDay) {
-		// 				monthsDifference = 0
-		// 			} else {
-		// 				monthsDifference = currentMonth - monthOfBirth
-		// 			}
-		// 		} else {
-		// 			monthsDifference = 0
-		// 		}
-		// 		if(yearsDifference <= 0) {
-		// 			yearsDifference = 0
-		// 		} else {
-		// 			if(monthOfBirth === currentMonth){
-		// 				monthsDifference = 0
-		// 			} else {
-		// 				if(dayOfBirth > currentDay) {
-		// 					yearsDifference--
-		// 				}
-		// 			}
-		// 			this.getYearDifference(yearsDifference, currentYear, yearOfBirth)
-		// 		}
-		// 	} else {
-		// 		yearsDifference--
-		// 		monthsDifference = currentMonth - monthOfBirth
-		// 		if(monthsDifference < 0) {
-		// 			if(dayOfBirth <= currentDay) {
-		// 				monthsDifference = 12 + monthsDifference
-		// 			} else {
-		// 				monthsDifference = 12 + monthsDifference
-		// 				daysDifference = dayOfBirth - currentDay
-		// 			}
-		// 		}
-		// 	}
-		//
-		// 	this.years = yearsDifference;
-		// 	this.months = monthsDifference;
-		// 	this.days = daysDifference;
-		// },
-		//
-		// getDaysInMonth(year, month) {
-		// 	let daysInMonthArray = [31,,31,30,31,30,31,31,30,31,30,31]
-		//
-		// 	if((year % 4 ) === 0) {
-		// 		daysInMonthArray[1] = 29
-		// 	} else {
-		// 		daysInMonthArray[1] = 28
-		// 	}
-		// 	return daysInMonthArray[month]
-		// },
-		//
-		// getYearDifference(yearsDifference, currentYear, yearOfBirth) {
-		// 	if(yearsDifference <= 0) {
-		// 		return yearsDifference = 0
-		// 	} else {
-		// 		return yearsDifference = currentYear - yearOfBirth
-		// 	}
-		// }
+
+		getCurrent() {
+			let theCurrentYear =  this.today.getFullYear();
+			let theCurrentMonth =  this.today.getMonth();
+			let theCurrentDay =  this.today.getDate();
+			this.currentYear = theCurrentYear
+			this.currentMonth = theCurrentMonth
+			this.currentDay = theCurrentDay
+
+		},
 
 		checkAge() {
-			let today = new Date();
-			let checkDate = new Date(this.yearOfBirth + ' ' + this.monthOfBirth + ' ' + this.dayOfBirth)
-			let differenceInTime = today.getTime() - checkDate.getTime();
-			let differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
-			this.years = Math.floor(differenceInDays / 365.25);
-			let remainingDays = Math.floor(differenceInDays - (this.years * 365.25));
-			this.months = Math.floor((remainingDays / 365.25) * 12);
-			this.days = Math.ceil(differenceInDays - (this.years * 365.25 + (this.months / 12 * 365.25)))
+			this.getYearsDifference()
+			this.getMonthsDifference()
+			this.getDaysDifference()
 		},
+		getYearsDifference() {
+			if(this.yearOfBirth > this.currentYear) {
+				this.years = '- -'
+				this.months = '- -'
+				this.days = '- -'
+			} else {
+				if (this.yearOfBirth === this.currentYear) {
+					this.years = 0
+				} else {
+					this.years = this.currentYear - this.yearOfBirth
+				}
+			}
+		},
+		getMonthsDifference() {
+			let birthMonthZeroIndexed = this.monthOfBirth-1
+			if(birthMonthZeroIndexed > this.currentMonth) {
+				this.months = (12 - birthMonthZeroIndexed) + this.currentMonth
+				if(this.yearOfBirth === this.currentYear) {
+					this.years = 0
+				} else {
+					this.years--
+				}
+			} else {
+				if(birthMonthZeroIndexed === this.currentMonth) {
+					this.months = 0
+				} else {
+					if (this.months < 0 ) {
+						this.months = 12 - this.months
+					} else {
+						this.months = this.currentMonth - birthMonthZeroIndexed
+					}
+				}
+			}
+		},
+		getDaysDifference() {
+			let daysInMonthArray = [31,,31,30,31,30,31,31,30,31,30,31]
+			let birthMonthZeroIndexed = (this.monthOfBirth - 1)
+			if((birthMonthZeroIndexed % 4 ) === 0) {
+				daysInMonthArray[1] = 29
+			} else {
+				daysInMonthArray[1] = 28
+			}
+			let daysInMonthOfBirth = daysInMonthArray[birthMonthZeroIndexed]
+			let dayDifference = this.currentDay - this.dayOfBirth
+			if (dayDifference <= 0) {
+				if(dayDifference === 0) {
+					this.days = 0
+				} else {
+					this.days = daysInMonthOfBirth + dayDifference
+					if(birthMonthZeroIndexed === this.currentMonth) {
+						this.years--
+						this.months = 11
+					}
+				}
+			} else {
+				this.days = this.currentDay - this.dayOfBirth
+			}
+		}
 	}
 }
