@@ -128,7 +128,6 @@ window.calculateAge = function() {
 			this.currentYear = theCurrentYear
 			this.currentMonth = theCurrentMonth
 			this.currentDay = theCurrentDay
-
 		},
 
 		checkAge() {
@@ -136,8 +135,9 @@ window.calculateAge = function() {
 			this.getMonthsDifference()
 			this.getDaysDifference()
 		},
+
 		getYearsDifference() {
-			if(this.yearOfBirth > this.currentYear) {
+			if(this.yearOfBirth > this.currentYear || this.validation.yearOfBirth.message || this.validDateMessage) {
 				this.years = '- -'
 				this.months = '- -'
 				this.days = '- -'
@@ -149,49 +149,63 @@ window.calculateAge = function() {
 				}
 			}
 		},
+
 		getMonthsDifference() {
-			let birthMonthZeroIndexed = this.monthOfBirth-1
-			if(birthMonthZeroIndexed > this.currentMonth) {
-				this.months = (12 - birthMonthZeroIndexed) + this.currentMonth
-				if(this.yearOfBirth === this.currentYear) {
-					this.years = 0
-				} else {
-					this.years--
-				}
+			if(this.validation.yearOfBirth.message || this.validDateMessage) {
+				this.years = '- -'
+				this.months = '- -'
+				this.days = '- -'
 			} else {
-				if(birthMonthZeroIndexed === this.currentMonth) {
-					this.months = 0
-				} else {
-					if (this.months < 0 ) {
-						this.months = 12 - this.months
+				let birthMonthZeroIndexed = this.monthOfBirth-1
+				if(birthMonthZeroIndexed > this.currentMonth) {
+					this.months = (12 - birthMonthZeroIndexed) + this.currentMonth
+					if(this.yearOfBirth === this.currentYear) {
+						this.years = 0
 					} else {
-						this.months = this.currentMonth - birthMonthZeroIndexed
+						this.years--
+					}
+				} else {
+					if(birthMonthZeroIndexed === this.currentMonth) {
+						this.months = 0
+					} else {
+						if (this.months < 0 ) {
+							this.months = 12 - this.months
+						} else {
+							this.months = this.currentMonth - birthMonthZeroIndexed
+						}
 					}
 				}
 			}
 		},
+
 		getDaysDifference() {
-			let daysInMonthArray = [31,,31,30,31,30,31,31,30,31,30,31]
-			let birthMonthZeroIndexed = (this.monthOfBirth - 1)
-			if((birthMonthZeroIndexed % 4 ) === 0) {
-				daysInMonthArray[1] = 29
+			if(this.validation.yearOfBirth.message || this.validDateMessage) {
+				this.years = '- -'
+				this.months = '- -'
+				this.days = '- -'
 			} else {
-				daysInMonthArray[1] = 28
-			}
-			let daysInMonthOfBirth = daysInMonthArray[birthMonthZeroIndexed]
-			let dayDifference = this.currentDay - this.dayOfBirth
-			if (dayDifference <= 0) {
-				if(dayDifference === 0) {
-					this.days = 0
+				let daysInMonthArray = [31,,31,30,31,30,31,31,30,31,30,31]
+				let birthMonthZeroIndexed = (this.monthOfBirth - 1)
+				if((birthMonthZeroIndexed % 4 ) === 0) {
+					daysInMonthArray[1] = 29
 				} else {
-					this.days = daysInMonthOfBirth + dayDifference
-					if(birthMonthZeroIndexed === this.currentMonth) {
-						this.years--
-						this.months = 11
-					}
+					daysInMonthArray[1] = 28
 				}
-			} else {
-				this.days = this.currentDay - this.dayOfBirth
+				let daysInMonthOfBirth = daysInMonthArray[birthMonthZeroIndexed]
+				let dayDifference = this.currentDay - this.dayOfBirth
+				if (dayDifference <= 0) {
+					if(dayDifference === 0) {
+						this.days = 0
+					} else {
+						this.days = daysInMonthOfBirth + dayDifference
+						if(birthMonthZeroIndexed === this.currentMonth) {
+							this.years--
+							this.months = 11
+						}
+					}
+				} else {
+					this.days = this.currentDay - this.dayOfBirth
+				}
 			}
 		}
 	}
