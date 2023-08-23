@@ -151,7 +151,7 @@ window.calculateAge = function() {
 		},
 
 		getMonthsDifference() {
-			if(this.validation.yearOfBirth.message || this.validDateMessage) {
+			if(this.validation.monthOfBirth.message || this.validDateMessage) {
 				this.years = '- -'
 				this.months = '- -'
 				this.days = '- -'
@@ -179,7 +179,7 @@ window.calculateAge = function() {
 		},
 
 		getDaysDifference() {
-			if(this.validation.yearOfBirth.message || this.validDateMessage) {
+			if(this.validation.dayOfBirth.message || this.validDateMessage) {
 				this.years = '- -'
 				this.months = '- -'
 				this.days = '- -'
@@ -207,6 +207,6 @@ window.calculateAge = function() {
 					this.days = this.currentDay - this.dayOfBirth
 				}
 			}
-		}
+		},
 	}
 }
